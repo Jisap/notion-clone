@@ -9,15 +9,27 @@ const Heroes = () => {
                <Image
                   src="/documents.png"
                   fill
-                  className="object-contain"
+                  className="object-contain dark:hidden" // Si el tema es dark esta oculto
+                  alt="Documents"
+               />
+               <Image
+                  src="/documents-dark.png"
+                  fill
+                  className="object-contain hidden dark:block" // por defecto hidden pero si el theme es dark aparece
                   alt="Documents"
                />
             </div>
-            <div className="relative h-[400px] w-[400px] hidden md:block">
+            <div className="relative h-[400px] w-[400px] hidden md:block"> 
                <Image 
                   src="/reading.png"
                   fill
-                  className="object-contain"
+                  className="object-contain dark:hidden"
+                  alt="Reading"
+               />
+               <Image
+                  src="/reading-dark.png"
+                  fill
+                  className="object-contain hidden dark:block"
                   alt="Reading"
                />
             </div>

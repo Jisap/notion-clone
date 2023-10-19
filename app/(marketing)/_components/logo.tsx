@@ -16,6 +16,14 @@ const Logo = () => {
             height="40"
             width="40"
             alt="Logo"
+            className="dark:hidden" // Si el tema es dark esta oculto
+         />
+         <Image
+            src="/logo-dark.svg"
+            height="40"
+            width="40"
+            alt="Logo"
+            className="hidden dark:block" // por defecto hidden pero si el theme es dark aparece
          />
          <p className={cn("font-semibold", font.className)}>
             Jotion
