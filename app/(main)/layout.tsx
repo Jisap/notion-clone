@@ -18,7 +18,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
    }
 
    if (!isAuthenticated) {       // Sino estas autenticado
-      return redirect("/");      // pasas al siguiente directorio (marketing)   
+      return redirect("/");      // pasas al directorio de marketing   
    }
 
    return (
