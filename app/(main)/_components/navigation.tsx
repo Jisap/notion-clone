@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react"
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./user-item";
-import { useQuery, useMutation } from 'convex/react';
+import { useMutation } from 'convex/react';
 import { api } from "@/convex/_generated/api";
 import Item from "./item";
 import { toast } from "sonner";
+import DocumentList from "./document-List";
 
 
 
@@ -19,7 +20,6 @@ const Navigation = () => {
 
    const isMobile = useMediaQuery("(max-width: 768px)");
 
-   const documents = useQuery(api.documents.get);     // Petición al backend convex de todas las rows de la tabla documents
    const create = useMutation(api.documents.create);  // Mutation para crear una row en la tabla documents
 
    const isResizingRef = useRef(false);
@@ -152,9 +152,7 @@ const Navigation = () => {
                />
             </div>
             <div className="mt-4">
-               { documents?.map((document) =>(
-                  <p key={document._id}>{document.title}</p>   
-               ))}
+               <DocumentList />
             </div>
 
             {/* Barra de separación entre sidebarRef y navbarRef */}
