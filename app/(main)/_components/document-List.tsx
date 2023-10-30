@@ -17,7 +17,7 @@ interface DocumentListProps {
 };
 
 const DocumentList = ({ parentDocumentId, level=0 }: DocumentListProps) => {
-
+console.log(level)
   const params = useParams();
   const router = useRouter();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -59,8 +59,8 @@ const DocumentList = ({ parentDocumentId, level=0 }: DocumentListProps) => {
         }}
         className={cn(
           "hidden text-sm font-medium text-muted-foreground/80",
-          expanded && "last:block",
-          level === 0 && "hidden"
+          expanded && "last:block", // Si esta expandido el párrafo se mostrará al final de la lista de documentos, sino hidden por defecto.
+          //level === 0 && "hidden"   // Si el level es cero (no tiene hijos) se oculta el mensaje
         )}
       >
         No pages inside

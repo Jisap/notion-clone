@@ -153,6 +153,11 @@ const Navigation = () => {
             </div>
             <div className="mt-4">
                <DocumentList />
+               <Item 
+                  onClick={handleCreate}
+                  icon={PlusCircle}
+                  label="Add a page"
+               />
             </div>
 
             {/* Barra de separación entre sidebarRef y navbarRef */}
