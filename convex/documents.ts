@@ -114,3 +114,89 @@ export const archive = mutation({ // Con esta función queremos modificar la pro
         return document;
     }
 })
+
+export const getTrash = query({
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new Error("Not authenticated");
+        }
+
+        const userId = identity.subject;
+
+        const documents = await ctx.db
+            .query("documents")
+            .withIndex("by_user", (q) => q.eq("userId", userId))
+            .filter((q) =>
+                q.eq(q.field("isArchived"), true), // Se seleccionan los documentos que tienen isArchived en true
+            )
+            .order("desc")
+            .collect();
+
+        return documents;
+    }
+});
+
+
+export const restore = mutation({
+
+    args: { id: v.id("documents") },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new Error("Not authenticated");
+        }
+
+        const userId = identity.subject;
+
+        const existingDocument = await ctx.db.get(args.id);
+
+        if (!existingDocument) {
+            throw new Error("Not found");
+        }
+
+        if (existingDocument.userId !== userId) {
+            throw new Error("Unauthorized");
+        }
+
+                                         // doc ppal           
+        const recursiveRestore = async (documentId: Id<"documents">) => {  // Se utiliza para restaurar documentos que estan relacionados jerarquicamente con el doc ppal
+            
+            const children = await ctx.db                                  // documentos que estan relacionados jerarquicamente con el doc ppal (children)
+                .query("documents")                                        // Buscamos en la tabla documents         
+                .withIndex("by_user_parent", (q) => (                      // usando el índice "by_user_parent"  
+                    q                                                      
+                        .eq("userId", userId)                              //  aquellos childrens que pertenecen al mismo usuario
+                        .eq("parentDocument", documentId)                  // y tienen como doc.padre el id del doc.ppal
+                ))
+                .collect();
+
+            for (const child of children) {                                // Se iteran los childrens 
+                await ctx.db.patch(child._id, {                            // y se actualiza en cada uno la propiedad isArchived=false 
+                    isArchived: false,                                     // lo que indica que el documento secundario ya no esta archivado 
+                });
+
+                await recursiveRestore(child._id);                         // Luego, se llama de manera recursiva a la función recursiveRestore(child._id)  
+            }                                                              // para procesar cualquier documento secundario que pueda tener a su vez otros documentos secundarios. 
+        }
+
+        const options: Partial<Doc<"documents">> = { // Establecemos como se actualizará el doc ppal (type Doc con todas las props opcionales)
+            isArchived: false,
+        };
+
+        if (existingDocument.parentDocument) {                                  // se verifica si el documento principal tiene un "parentDocument" (documento padre)
+            const parent = await ctx.db.get(existingDocument.parentDocument);   // Si lo tiene, se intenta obtener el documento padre de la base de datos
+            if (parent?.isArchived) {                                           // se verifica si el documento padre existe (parent) y si está archivado 
+                options.parentDocument = undefined;                             // Si lo esta se modifica el objeto options eliminando la ref a ese doc padre
+            }
+        }
+
+        const document = await ctx.db.patch(args.id, options);  // Se actualiza el doc ppal estableciendo isArchived=false y elimina la ref al padre si corresponde
+
+        recursiveRestore(args.id);  // Se inicia el proceso de restauración recursiva de los docs secundarios
+
+        return document;    //  Finalmente se devuelve el documento principal actualizado como resultado de la operación de restauración.
+    }
+});

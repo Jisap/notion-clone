@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { ChevronsLeft, MenuIcon, PlusCircle, Search, Settings } from "lucide-react"
+import { ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from "lucide-react"
 import { usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react"
 import { useMediaQuery } from "usehooks-ts";
@@ -11,6 +11,12 @@ import { api } from "@/convex/_generated/api";
 import Item from "./item";
 import { toast } from "sonner";
 import DocumentList from "./document-List";
+import {
+   Popover,
+   PopoverTrigger,
+   PopoverContent,
+} from "@/components/ui/popover";
+import { TrashBox } from "./trash_box";
 
 
 
@@ -155,9 +161,23 @@ const Navigation = () => {
                <DocumentList />
                <Item 
                   onClick={handleCreate}
-                  icon={PlusCircle}
+                  icon={Plus}
                   label="Add a page"
                />
+               <Popover>
+                  <PopoverTrigger className="w-full mt-4">
+                     <Item 
+                        icon={Trash}
+                        label="Trash"
+                     />
+                     <PopoverContent
+                        className="p-0 w-72"
+                        side={isMobile ? "bottom" : "right"}
+                     >
+                        <TrashBox />
+                     </PopoverContent>
+                  </PopoverTrigger>
+               </Popover>
             </div>
 
             {/* Barra de separación entre sidebarRef y navbarRef */}
