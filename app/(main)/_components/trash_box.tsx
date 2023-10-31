@@ -10,7 +10,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Spinner } from "@/components/spinner";
 import { Input } from "@/components/ui/input";
-//import { ConfirmModal } from "@/components/modals/confirm-modal";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
 
 export const TrashBox = () => {
 
@@ -88,20 +88,30 @@ export const TrashBox = () => {
             <div
               key={document._id}
               role="button"
-              onClick={() => onClick(document._id)}
+              onClick={() => onClick(document._id)} // redirección a su página
               className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center text-primary justify-between"
             >
               <span className="truncate pl-2">
                 {document.title}
               </span>
               <div className="flex items-center">
-                <div
-                  onClick={(e) => onRestore(e, document._id)}
+                <div 
+                  onClick={(e) => onRestore(e, document._id)} // boton de restauración
                   role="button"
                   className="rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
                 >
                   <Undo className="h-4 w-4 text-muted-foreground" />
                 </div>
+                <ConfirmModal 
+                  onConfirm={() => onRemove(document._id)} // Boton de borrado
+                >
+                  <div
+                    role="button"
+                    className="rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
+                  >
+                    <Trash className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </ConfirmModal>
               </div>
             </div>
           ))
