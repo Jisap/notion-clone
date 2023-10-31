@@ -44,9 +44,7 @@ export const TrashBox = () => {
     });
   };
 
-  const onRemove = (
-    documentId: Id<"documents">,
-  ) => {
+  const onRemove = (documentId: Id<"documents">) => {
     const promise = remove({ id: documentId });
 
     toast.promise(promise, {
