@@ -17,15 +17,15 @@ import {
    PopoverContent,
 } from "@/components/ui/popover";
 import { TrashBox } from "./trash_box";
+import { useSearch } from "@/hooks/use-search";
 
 
 
 const Navigation = () => {
 
+   const search = useSearch();
    const pathname = usePathname();
-
    const isMobile = useMediaQuery("(max-width: 768px)");
-
    const create = useMutation(api.documents.create);  // Mutation para crear una row en la tabla documents
 
    const isResizingRef = useRef(false);
@@ -144,7 +144,7 @@ const Navigation = () => {
                   label="Search"
                   icon={Search}
                   isSearch
-                  onClick={() => {}}
+                  onClick={search.onOpen}
                />
                <Item
                   label="Settings"
