@@ -16,14 +16,14 @@ export const TrashBox = () => {
 
   const router = useRouter();
   const params = useParams();
-  const documents = useQuery(api.documents.getTrash);
+  const documents = useQuery(api.documents.getTrash);                     // Documentos que han sido archivados
   const restore = useMutation(api.documents.restore);
   const remove = useMutation(api.documents.remove);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");                               // Término de la busqueda
 
-  const filteredDocuments = documents?.filter((document) => {
-    return document.title.toLowerCase().includes(search.toLowerCase());
+  const filteredDocuments = documents?.filter((document) => {             // Documentos archivados según término de la busqueda         
+    return document.title.toLowerCase().includes(search.toLowerCase());  
   });
 
   const onClick = (documentId: string) => {
@@ -35,7 +35,7 @@ export const TrashBox = () => {
     documentId: Id<"documents">,
   ) => {
     event.stopPropagation();
-    const promise = restore({ id: documentId });
+    const promise = restore({ id: documentId });                          // Restauración del documento donde hizo click
 
     toast.promise(promise, {
       loading: "Restoring note...",
@@ -45,7 +45,7 @@ export const TrashBox = () => {
   };
 
   const onRemove = (documentId: Id<"documents">) => {
-    const promise = remove({ id: documentId });
+    const promise = remove({ id: documentId });                           // Borrado de la bd del documento donde se hizo click
 
     toast.promise(promise, {
       loading: "Deleting note...",

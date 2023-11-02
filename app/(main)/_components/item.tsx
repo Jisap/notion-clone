@@ -80,6 +80,8 @@ const Item = ({
    const ChevronIcon = expanded ? ChevronDown : ChevronRight; // Si el document esta expanded flechita abajo sino a la derecha
 
    return (
+
+      // Icon de expandir o expandido
       <div
          onClick={onClick}
          role="button"
@@ -104,6 +106,8 @@ const Item = ({
             </div>
          )}
 
+         {/* Icon del documento + label + CtrlK */}
+
          {documentIcon ? ( // Si el documentIcon se provee se usa
             <div className="shrink-0 mr-2 text-[18px]">
                {documentIcon}
@@ -122,6 +126,8 @@ const Item = ({
                   <span className="text-xs">CTRL</span>K
                </kbd>   
             )}
+
+            {/* icon de opcion de delete -> archive en un dropdown */}
 
             {!!id && (
                <div className="ml-auto flex items-center gap-x-2">

@@ -17,10 +17,10 @@ interface DocumentListProps {
 };
 
 const DocumentList = ({ parentDocumentId, level=0 }: DocumentListProps) => {
-console.log(level)
+
   const params = useParams();
   const router = useRouter();
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({}); // Estado [documentId: string, expanded:true/false]
 
   const onExpand = (documentId: string) => {    // Se llama cuando el usuario hace click en un documento para expandirlo
     setExpanded(prevExpanded => ({              // setExpanded    

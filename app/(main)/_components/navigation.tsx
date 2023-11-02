@@ -18,12 +18,15 @@ import {
 } from "@/components/ui/popover";
 import { TrashBox } from "./trash_box";
 import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-setting";
+
 
 
 
 const Navigation = () => {
 
-   const search = useSearch();
+   const search = useSearch(); // State para search: isOpen
+   const settings  = useSettings(); // State para settings : isOpen
    const pathname = usePathname();
    const isMobile = useMediaQuery("(max-width: 768px)");
    const create = useMutation(api.documents.create);  // Mutation para crear una row en la tabla documents
@@ -144,12 +147,12 @@ const Navigation = () => {
                   label="Search"
                   icon={Search}
                   isSearch
-                  onClick={search.onOpen}
+                  onClick={search.onOpen} // onOpen -> isOpen=true -> SearchCommand -> CommandDialog
                />
                <Item
                   label="Settings"
                   icon={Settings}
-                  onClick={() => { }}
+                  onClick={settings.onOpen} // onOpen -> isOpen=true -> SettingsModal
                />
                <Item 
                   onClick={handleCreate} 
@@ -164,6 +167,7 @@ const Navigation = () => {
                   icon={Plus}
                   label="Add a page"
                />
+               {/* Contiene el popup de restauración y borrado de documentos archivados*/}
                <Popover>
                   <PopoverTrigger className="w-full mt-4">
                      <Item 
