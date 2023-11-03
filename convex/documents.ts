@@ -280,3 +280,41 @@ export const getById = query({
         return document;
     }
 });
+
+export const update = mutation({
+    args: {
+        id: v.id("documents"),
+        title: v.optional(v.string()),
+        content: v.optional(v.string()),
+        coverImage: v.optional(v.string()),
+        icon: v.optional(v.string()),
+        isPublished: v.optional(v.boolean())
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new Error("Unauthenticated");
+        }
+
+        const userId = identity.subject;
+
+        const { id, ...rest } = args;                           // id del doc según args
+
+        const existingDocument = await ctx.db.get(args.id);     // Con ese id se verifica que el documento existe en bd
+
+        if (!existingDocument) {                                // Sino existe error
+            throw new Error("Not found");
+        }
+
+        if (existingDocument.userId !== userId) {               // Si existe el doc y su userId !== usuario logueado, error    
+            throw new Error("Unauthorized");
+        }
+
+        const document = await ctx.db.patch(args.id, {          // Si el doc existe en bd y pertenece al usuario logueado
+            ...rest,                                            // se actualiza el doc con la info de los args
+        });
+
+        return document;                                        // Se retorna el doc actualizado.
+    },
+});
