@@ -7,6 +7,7 @@ import { MenuIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import Title from "./title";
 import Menu from "./menu";
+import Banner from "./banner";
 
 
 
@@ -52,6 +53,10 @@ const Navbar = ({ isCollapsed, onResetWidth }:NavbarProps) => {
             <Title initialData={document} />
         </div>
       </nav>
+
+      {document.isArchived && (
+        <Banner />  
+      )}
     </>
   )
 }
