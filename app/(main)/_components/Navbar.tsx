@@ -55,7 +55,7 @@ const Navbar = ({ isCollapsed, onResetWidth }:NavbarProps) => {
       </nav>
 
       {document.isArchived && (
-        <Banner />  
+        <Banner documentId={document._id}/>  
       )}
     </>
   )
