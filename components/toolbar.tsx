@@ -28,7 +28,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
   const update = useMutation(api.documents.update);
   const removeIcon = useMutation(api.documents.removeIcon);
 
-  const enableInput = () => {
+  const enableInput = () => {                         // Habilita el campo de texto para editar el título del documento.
     if (preview) return;
 
     setIsEditing(true);
@@ -38,9 +38,9 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     }, 0);
   };
 
-  const disableInput = () => setIsEditing(false);
+  const disableInput = () => setIsEditing(false);   // Deshabilita el campo de texto para editar el título del documento.
 
-  const onInput = (value: string) => {
+  const onInput = (value: string) => {              // Actualiza el valor del título del documento a medida que el usuario escribe en el campo de texto.
     setValue(value);
     update({
       id: initialData._id,
@@ -48,21 +48,21 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     });
   };
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {  // Detecta cuando el usuario presiona la tecla Enter en el campo de texto y, en ese caso, deshabilitar el campo de texto.
     if (event.key === "Enter") {
       event.preventDefault();
       disableInput();
     }
   };
 
-  const onIconSelect = (icon: string) => {
+  const onIconSelect = (icon: string) => {  // Actualiza el icono del documento cuando el usuario selecciona un nuevo icono en el selector de iconos.
     update({
       id: initialData._id,
       icon,
     });
   };
 
-  const onRemoveIcon = () => {
+  const onRemoveIcon = () => {  // Elimina el icono del documento
     removeIcon({
       id: initialData._id
     })
@@ -70,6 +70,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
 
   return (
     <div className="pl-[54px] group relative">
+      {/* Si hay un icon para el documento y no esta en mode preview -> mostramos iconPicker y el boton de borrar */}
       {!!initialData.icon && !preview && (
         <div className="flex items-center gap-x-2 group/icon pt-6">
           <IconPicker
@@ -89,12 +90,16 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
           </Button>
         </div>  
       )}
+
+      {/* si el documento tiene un icon y esta en modo preview -> mostramos el icon del documento*/}
       {!!initialData.icon && preview && (
         <p className="text-6xl pt-6">
           {initialData.icon}
         </p>  
       )}
+
       <div className="opacity-0 group-hover:opacity-100 flex items-center gap-x-1 py-4">
+      {/* Si el documento no tiene icon y no esta en modo preview -> mostramos el iconPicker */}
         {!initialData.icon && !preview && (
           <IconPicker asChild onChange={onIconSelect}>
             <Button
@@ -107,6 +112,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
             </Button>
           </IconPicker>
         )}
+        {/* Si el documento no tiene coverImage y no esta en modo preview -> mostramos el boton del coverImage */}
         {!initialData.coverImage && !preview && (
           <Button
             onClick={() => {}}
