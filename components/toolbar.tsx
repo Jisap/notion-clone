@@ -5,7 +5,7 @@ import { ImageIcon, Smile, X } from "lucide-react";
 import { useMutation } from "convex/react";
 import TextareaAutosize from "react-textarea-autosize";
 
-//import { useCoverImage } from "@/hooks/use-cover-image";
+import { useCoverImage } from "@/hooks/use-cover-image";
 import { Doc } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
@@ -27,6 +27,8 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
 
   const update = useMutation(api.documents.update);
   const removeIcon = useMutation(api.documents.removeIcon);
+
+  const coverImage = useCoverImage();                 // Estado para coverImage
 
   const enableInput = () => {                         // Habilita el campo de texto para editar el título del documento.
     if (preview) return;
@@ -70,7 +72,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
 
   return (
     <div className="pl-[54px] group relative">
-      {/* Si hay un icon para el documento y no esta en mode preview -> mostramos iconPicker y el boton de borrar */}
+      {/* Si hay un icon para el documento y no esta en mode preview -> mostramos iconPicker, el icon y el boton de borrarlo */}
       {!!initialData.icon && !preview && (
         <div className="flex items-center gap-x-2 group/icon pt-6">
           <IconPicker
@@ -115,7 +117,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
         {/* Si el documento no tiene coverImage y no esta en modo preview -> mostramos el boton del coverImage */}
         {!initialData.coverImage && !preview && (
           <Button
-            onClick={() => {}}
+            onClick={coverImage.onOpen}
             className="text-muted-foreground text-xs"
             variant="outline"
             size="sm"
