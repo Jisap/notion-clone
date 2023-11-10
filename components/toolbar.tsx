@@ -117,7 +117,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
         {/* Si el documento no tiene coverImage y no esta en modo preview -> mostramos el boton del coverImage */}
         {!initialData.coverImage && !preview && (
           <Button
-            onClick={coverImage.onOpen}
+            onClick={coverImage.onOpen} // coverImage.onOpen -> modalProvider -> open coverImageModal -> onChange img -> singleImageDropZone -> edgeStore Provider (rutas)
             className="text-muted-foreground text-xs"
             variant="outline"
             size="sm"

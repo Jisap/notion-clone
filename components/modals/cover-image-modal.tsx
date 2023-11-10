@@ -37,7 +37,7 @@ export const CoverImageModal = () => {
       setIsSubmitting(true);
       setFile(file);
 
-      const res = await edgestore.publicFiles.upload({
+      const res = await edgestore.publicFiles.upload({ // Subida de la imagen aedstore y sustitución si ya existía
         file,
         options: {
           replaceTargetUrl: coverImage.url
@@ -45,7 +45,7 @@ export const CoverImageModal = () => {
       });
 
       await update({
-        id: params.documentId as Id<"documents">,
+        id: params.documentId as Id<"documents">,   // Actualización en base de datos (convex) de la url del cover con la de edgestore
         coverImage: res.url
       });
 
