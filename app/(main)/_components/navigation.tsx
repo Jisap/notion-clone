@@ -20,12 +20,14 @@ import { TrashBox } from "./trash_box";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-setting";
 import Navbar from "./Navbar";
+import { useRouter } from "next/navigation";
 
 
 
 
 const Navigation = () => {
 
+   const router = useRouter();
    const search = useSearch(); // State para search: isOpen
    const settings  = useSettings(); // State para settings : isOpen
    const params = useParams();
@@ -116,7 +118,9 @@ const Navigation = () => {
    }
 
    const handleCreate = () => {
-      const promise = create({ title: "Untitled" });
+      const promise = create({ title: "Untitled" })                     // Se crea un nuevo documento en bd o dentro de otro documento padre
+         .then((documentId) => router.push(`/documents/${documentId}`)) // y siempre devuelve el id de ese documento nuevo -> redirección a su page
+
       toast.promise(promise, {
          loading: "Creating a new note...",
          success: "New note created!",

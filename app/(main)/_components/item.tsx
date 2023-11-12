@@ -45,7 +45,8 @@ const Item = ({
    const onArchive = (event: React.MouseEvent<HTMLDivElement>) => {
       event.stopPropagation();
       if(!id) return;
-      const promise = archive({ id });
+      const promise = archive({ id })
+         .then(() => router.push("/documents")) // Cuando se archiva un documento redirección a la page ppal
       
       toast.promise(promise, {
          loading: "Movin to trash...",
@@ -67,7 +68,7 @@ const Item = ({
             if(!expanded){
                onExpand?.();
             }
-            //router.push(`/documents/${documentId}`);
+            router.push(`/documents/${documentId}`);
          });
       
       toast.promise(promise, {
