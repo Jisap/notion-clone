@@ -73,7 +73,7 @@ const Publish = ({ initialData }: PublishProps) => { // Se recibe el documento a
       <PopoverTrigger asChild>
         <Button size="sm" variant="ghost">
           Publish
-          {initialData.isPublished && (
+          {initialData.isPublished && ( // Si el doc tiene isPublished=true se muestra el icon Globe en azul, sino no se muestra
             <Globe
               className="text-sky-500 w-4 h-4 ml-2" 
             />  
@@ -86,10 +86,10 @@ const Publish = ({ initialData }: PublishProps) => { // Se recibe el documento a
         alignOffset={8}
         forceMount
       >
-        {initialData.isPublished ? (
+        {initialData.isPublished ? (  // Si el doc. tiene isPublished=true -> icon Globe en azul y mensaje + button a link del doc + button de unpublish
           <div className="space-y-4">
             <div className="flex items-center gap-x-2">
-              <Globe className="text-sky-500 animate-pulse h-4 w-4" />
+              <Globe className="text-sky-500 animate-pulse h-4 w-4" />  
               <p className="text-xs font-medium text-sky-500">
                 This note is live on web
               </p>
@@ -121,7 +121,7 @@ const Publish = ({ initialData }: PublishProps) => { // Se recibe el documento a
               Unpublish
             </Button>
           </div>
-        ) : (
+        ) : (                                                             // Si el doc tiene isPublished=false -> icon Globe en gris + button de publish
           <div className="flex flex-col items-center justify-center">
             <Globe
               className="h-8 w-8 text-muted-foreground mb-2"
